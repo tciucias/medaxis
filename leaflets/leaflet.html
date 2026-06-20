@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Information Leaflet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/leaflet.css">
+</head>
+<body>
+
+  <div class="screen-controls" id="screen-controls">
+    <button class="ctrl-btn ctrl-btn--print" onclick="window.print()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      Print / Save as PDF
+    </button>
+    <button class="ctrl-btn ctrl-btn--back" onclick="window.close()">Close</button>
+  </div>
+
+  <div class="leaflet-page" id="leaflet-page">
+
+    <header class="leaflet-header">
+      <div class="leaflet-brand">
+        <span class="brand-name">Medaxis</span>
+        <span class="brand-tag">Patient Information</span>
+      </div>
+      <div class="leaflet-meta" id="leaflet-meta"></div>
+    </header>
+
+    <h1 class="leaflet-title" id="leaflet-title"></h1>
+    <p class="leaflet-subtitle" id="leaflet-subtitle"></p>
+
+    <div class="leaflet-body" id="leaflet-body">
+      <p class="leaflet-error" id="leaflet-error" hidden>
+        No patient leaflet found for this guideline.
+      </p>
+    </div>
+
+    <footer class="leaflet-footer">
+      <p>This leaflet provides general information only and is not a substitute for professional medical advice. Always follow the guidance of your GP or healthcare team. Content is based on NICE guidelines and NHS resources. Produced by Medaxis &mdash; for educational use.</p>
+    </footer>
+
+  </div>
+
+  <script src="../data/guidelines.js"></script>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      if (!id) {
+        try { id = localStorage.getItem('medaxis_leaflet_id'); } catch (e) {}
+      }
+
+      if (!id || typeof GUIDELINES === 'undefined') {
+        document.getElementById('leaflet-error').hidden = false;
+        return;
+      }
+
+      const g = GUIDELINES.find(function (x) { return x.id === id; });
+
+      if (!g || !g.leaflet) {
+        document.getElementById('leaflet-error').hidden = false;
+        document.getElementById('leaflet-title').textContent = g ? g.title : 'Guideline not found';
+        return;
+      }
+
+      document.title = g.title + ' — Patient Information';
+      document.getElementById('leaflet-title').innerHTML = g.leaflet_title || g.title;
+      document.getElementById('leaflet-subtitle').innerHTML = g.subtitle || '';
+
+      var meta = document.getElementById('leaflet-meta');
+      meta.innerHTML =
+        '<span class="leaflet-ref">' + (g.nice_ref || '') + '</span>' +
+        '<span class="leaflet-updated">Updated: ' + (g.updated || '') + '</span>';
+
+      document.getElementById('leaflet-body').innerHTML = g.leaflet;
+    })();
+  </script>
+
+</body>
+</html>

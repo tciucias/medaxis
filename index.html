@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Medaxis — NICE guideline quick-reference cards for GPs and GP trainees">
+  <meta name="theme-color" content="#0d9488">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <title>Medaxis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="loading-overlay" aria-hidden="true">
+    <div class="loading-brand"><span class="brand-med">Med</span><span class="brand-axis">axis</span></div>
+    <div class="loading-spinner"></div>
+  </div>
+
+  <div class="bg-canvas" aria-hidden="true">
+    <div class="bg-glow bg-glow--purple"></div>
+    <div class="bg-glow bg-glow--blue"></div>
+    <div class="bg-glow bg-glow--pink"></div>
+    <div class="bg-glow bg-glow--teal"></div>
+    <div class="bg-glow bg-glow--violet"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="header-inner">
+      <h1 class="brand-title"><span class="brand-med">Med</span><span class="brand-axis">axis</span></h1>
+      <p class="brand-subtitle">Guidelines &middot; Quick Reference</p>
+    </div>
+  </header>
+
+  <!-- ── Controls ── -->
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search-wrap" role="search">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10 10l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search guidelines…"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+          aria-label="Search guidelines"
+        >
+        <button class="search-clear" id="search-clear" aria-label="Clear search">&#x2715;</button>
+      </div>
+      <div class="search-mode-toggle" role="group" aria-label="Search mode">
+        <span class="mode-indicator" aria-hidden="true"></span>
+        <button class="mode-btn mode-btn--active" data-mode="guidelines">Guidelines</button>
+        <button class="mode-btn" data-mode="content">Content</button>
+      </div>
+      <button class="font-size-btn" id="font-size-btn" aria-label="Text size: Default" data-scale="1">A</button>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode">
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.5 10A6 6 0 0 1 6 2.5a.5.5 0 0 0-.6-.6A6.5 6.5 0 1 0 14.1 10.6a.5.5 0 0 0-.6-.6z" fill="currentColor"/>
+        </svg>
+        <svg class="theme-icon theme-icon--sun" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="display:none">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+<button class="changelog-btn" id="changelog-btn" aria-label="Recent updates">Updates</button>
+    </div>
+  </div>
+
+
+  <!-- Shortcuts overlay -->
+  <div class="shortcuts-overlay" id="shortcuts-overlay" hidden role="dialog" aria-modal="true" aria-label="Keyboard shortcuts">
+    <div class="shortcuts-box">
+      <div class="shortcuts-header">
+        <span class="shortcuts-title">Keyboard Shortcuts</span>
+        <button class="overlay-close" id="shortcuts-close" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="shortcuts-list">
+        <div class="shortcuts-group-label">General</div>
+        <div class="shortcut-row"><kbd>/</kbd><span>Focus search</span></div>
+        <div class="shortcut-row"><kbd>?</kbd><span>Show shortcuts</span></div>
+        <div class="shortcuts-group-label">Inside a card</div>
+        <div class="shortcut-row"><kbd>/</kbd><span>Find in card</span></div>
+        <div class="shortcut-row"><span class="shortcut-pair"><kbd>&#8592;</kbd><kbd>&#8594;</kbd></span><span>Switch tabs</span></div>
+        <div class="shortcut-row"><kbd>Esc</kbd><span>Close card</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Changelog overlay -->
+  <div class="changelog-overlay" id="changelog-overlay" hidden role="dialog" aria-modal="true" aria-label="Recent updates">
+    <div class="changelog-box">
+      <div class="changelog-header">
+        <span class="changelog-title">Recent Updates</span>
+        <button class="overlay-close" id="changelog-close" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="changelog-search-wrap" id="changelog-search-wrap" hidden>
+        <input type="text" class="changelog-search-input" id="changelog-search-input" placeholder="Filter updates…" autocomplete="off" spellcheck="false" aria-label="Filter changelog">
+      </div>
+      <div class="changelog-list" id="changelog-list">
+        <p class="changelog-empty" id="changelog-empty" hidden>No matching updates.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Main ── -->
+  <main>
+
+    <!-- Search results (shown only when query active) -->
+    <section id="search-results" hidden>
+      <p class="results-count" id="results-count" aria-live="polite"></p>
+      <div class="card-grid" id="search-grid" role="list"></div>
+    </section>
+
+    <!-- Pinned -->
+    <section class="home-section" id="pinned-cards" hidden>
+      <h2 class="section-heading">Pinned</h2>
+      <div class="card-grid is-entering" id="pinned-cards-grid"></div>
+    </section>
+
+    <!-- Recently Viewed -->
+    <section class="home-section" id="recently-viewed" hidden>
+      <h2 class="section-heading">Recently Viewed</h2>
+      <div class="card-grid is-entering" id="recently-viewed-grid"></div>
+    </section>
+
+    <!-- Browse by System -->
+    <section class="home-section" id="systems-section">
+      <h2 class="section-heading">Browse by System <span class="section-count" id="guidelines-total"></span></h2>
+      <div id="systems-list">
+        <!-- Generated by app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="footer-col">
+        <h2 class="footer-brand"><span class="brand-med">Med</span><span class="brand-axis">axis</span></h2>
+        <p class="footer-strapline">NICE guideline quick-reference cards for GPs and GP trainees. Built to support confident, evidence-based consultations.</p>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-heading">About</h3>
+        <p class="footer-body">Medaxis is an independent clinical reference tool developed for use in UK primary care. Content is derived from NICE guidelines and CKS and is intended for educational purposes only. It is not independently verified by NICE and does not replace clinical judgement.</p>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-heading">Contact</h3>
+        <p class="footer-body">For feedback, content corrections, or enquiries about Medaxis, please get in touch by email.</p>
+        <a class="footer-link" href="mailto:hello@medaxis.co.uk">hello@medaxis.co.uk</a>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>&copy; 2026 Medaxis &middot; Educational use only &middot; Not independently verified by NICE &middot; Always apply clinical judgement</p>
+    </div>
+  </footer>
+
+  <!-- ── Modal ── -->
+  <div
+    class="modal-overlay"
+    id="modal-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+    <div class="modal-box">
+
+      <div class="modal-drag-handle" aria-hidden="true"></div>
+
+      <div class="modal-actions">
+        <button class="modal-copy-btn" id="modal-copy" aria-label="Copy link to guideline" title="Copy link">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" width="13" height="13">
+            <path d="M6.5 9.5a3 3 0 0 0 4.24.26l2-2a3 3 0 0 0-4.24-4.24l-1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M9.5 6.5a3 3 0 0 0-4.24-.26l-2 2a3 3 0 0 0 4.24 4.24l1-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="modal-find-btn" id="modal-find-btn" aria-label="Find in guideline" title="Find in guideline">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9.5 9.5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="modal-close" id="modal-close" aria-label="Close guideline">&#x2715;</button>
+      </div>
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h2 id="modal-title"></h2>
+        <div class="modal-meta">
+          <a class="modal-nice-badge" id="modal-ref" target="_blank" rel="noopener noreferrer"></a>
+          <span class="modal-meta-group">
+            <span class="modal-updated" id="modal-updated"></span>
+            <span class="modal-system-chip" id="modal-system"></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="modal-tabs" role="tablist">
+        <button class="modal-tab modal-tab--consult" data-tab="summary" role="tab" aria-controls="tab-summary" id="modal-tab-summary">Consult</button>
+        <button class="modal-tab" data-tab="diagnosis"  role="tab" aria-controls="tab-diagnosis">Diagnosis</button>
+        <button class="modal-tab" data-tab="investigations" role="tab" aria-controls="tab-investigations" id="modal-tab-investigations">Investigations</button>
+        <button class="modal-tab" data-tab="management" role="tab" aria-controls="tab-management">Management</button>
+        <button class="modal-tab" data-tab="overview"      role="tab" aria-controls="tab-overview"      id="modal-tab-overview">Overview</button>
+        <button class="modal-tab" data-tab="monitoring" role="tab" aria-controls="tab-monitoring">Monitoring</button>
+        <button class="modal-tab" data-tab="referral"   role="tab" aria-controls="tab-referral">Referral</button>
+        <button class="modal-tab" data-tab="air"        role="tab" aria-controls="tab-air"  id="modal-tab-air">AIR Therapy</button>
+        <button class="modal-tab" data-tab="mart"       role="tab" aria-controls="tab-mart" id="modal-tab-mart">MART Therapy</button>
+        <button class="modal-tab" data-tab="inhalers"   role="tab" aria-controls="tab-inhalers" id="modal-tab-inhalers">Inhaler Types</button>
+        <button class="modal-tab" data-tab="insulins"   role="tab" aria-controls="tab-insulins" id="modal-tab-insulins">Insulin Types</button>
+        <button class="modal-tab" data-tab="hrt"        role="tab" aria-controls="tab-hrt"      id="modal-tab-hrt">HRT Preparations</button>
+        <button class="modal-tab" data-tab="drugs"      role="tab" aria-controls="tab-drugs"    id="modal-tab-drugs">Oral Hypoglycaemics</button>
+        <button class="modal-tab" data-tab="gad2"       role="tab" aria-controls="tab-gad2"     id="modal-tab-gad2">GAD-2</button>
+        <button class="modal-tab" data-tab="gad7"       role="tab" aria-controls="tab-gad7"     id="modal-tab-gad7">GAD-7</button>
+        <button class="modal-tab" data-tab="aq10"       role="tab" aria-controls="tab-aq10"     id="modal-tab-aq10">AQ-10</button>
+        <button class="modal-tab" data-tab="dmard"      role="tab" aria-controls="tab-dmard"    id="modal-tab-dmard">DMARD Monitoring</button>
+        <button class="modal-tab" data-tab="gpcog"      role="tab" aria-controls="tab-gpcog"    id="modal-tab-gpcog">GPCOG</button>
+        <button class="modal-tab" data-tab="sixcit"     role="tab" aria-controls="tab-sixcit"   id="modal-tab-sixcit">6CIT</button>
+        <button class="modal-tab" data-tab="types"      role="tab" aria-controls="tab-types"    id="modal-tab-types">Types</button>
+        <button class="modal-tab" data-tab="images"     role="tab" aria-controls="tab-images"   id="modal-tab-images">Images</button>
+        <button class="modal-tab" data-tab="simonbroome" role="tab" aria-controls="tab-simonbroome" id="modal-tab-simonbroome">Simon Broome</button>
+        <button class="modal-tab" data-tab="steroids"    role="tab" aria-controls="tab-steroids"    id="modal-tab-steroids">Topical Steroids</button>
+        <button class="modal-tab" data-tab="ftu"                role="tab" aria-controls="tab-ftu"                id="modal-tab-ftu">Fingertip Units</button>
+        <button class="modal-tab" data-tab="schedule"          role="tab" aria-controls="tab-schedule"          id="modal-tab-schedule">Schedule</button>
+        <button class="modal-tab" data-tab="special-groups"    role="tab" aria-controls="tab-special-groups"    id="modal-tab-special-groups">Special Groups</button>
+        <button class="modal-tab" data-tab="at-risk"           role="tab" aria-controls="tab-at-risk"           id="modal-tab-at-risk">At-Risk Conditions</button>
+        <button class="modal-tab" data-tab="contraindications" role="tab" aria-controls="tab-contraindications" id="modal-tab-contraindications">Contraindications</button>
+        <button class="modal-tab" data-tab="administration"    role="tab" aria-controls="tab-administration"    id="modal-tab-administration">Administration</button>
+        <button class="modal-tab" data-tab="eye-drops"        role="tab" aria-controls="tab-eye-drops"        id="modal-tab-eye-drops">Eye Drops</button>
+        <button class="modal-tab" data-tab="resources"         role="tab" aria-controls="tab-resources"         id="modal-tab-resources">Resources</button>
+      </div>
+
+      <!-- Find bar -->
+      <div class="modal-find-bar" id="modal-find-bar" hidden>
+        <svg class="find-bar-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M9.5 9.5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <input type="text" class="find-input" id="find-input" placeholder="Find in guideline…" autocomplete="off" spellcheck="false" aria-label="Find in guideline">
+        <span class="find-count" id="find-count"></span>
+        <button class="find-nav-btn" id="find-prev" aria-label="Previous match">
+          <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 6.5l3-3 3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="find-nav-btn" id="find-next" aria-label="Next match">
+          <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="find-close-btn" id="find-close" aria-label="Close find bar">&#x2715;</button>
+      </div>
+
+      <!-- Tab content panels -->
+      <div class="modal-content">
+        <div class="tab-panel" id="tab-summary"        role="tabpanel"></div>
+        <div class="tab-panel" id="tab-diagnosis"      role="tabpanel"></div>
+        <div class="tab-panel" id="tab-management"     role="tabpanel"></div>
+        <div class="tab-panel" id="tab-overview"       role="tabpanel"></div>
+        <div class="tab-panel" id="tab-investigations" role="tabpanel"></div>
+        <div class="tab-panel" id="tab-monitoring" role="tabpanel"></div>
+        <div class="tab-panel" id="tab-referral"   role="tabpanel"></div>
+        <div class="tab-panel" id="tab-air"        role="tabpanel"></div>
+        <div class="tab-panel" id="tab-mart"       role="tabpanel"></div>
+        <div class="tab-panel" id="tab-inhalers"   role="tabpanel"></div>
+        <div class="tab-panel" id="tab-insulins"   role="tabpanel"></div>
+        <div class="tab-panel" id="tab-hrt"        role="tabpanel"></div>
+        <div class="tab-panel" id="tab-drugs"      role="tabpanel"></div>
+        <div class="tab-panel" id="tab-gad2"       role="tabpanel"></div>
+        <div class="tab-panel" id="tab-gad7"       role="tabpanel"></div>
+        <div class="tab-panel" id="tab-aq10"       role="tabpanel"></div>
+        <div class="tab-panel" id="tab-dmard"      role="tabpanel"></div>
+        <div class="tab-panel" id="tab-gpcog"      role="tabpanel"></div>
+        <div class="tab-panel" id="tab-sixcit"     role="tabpanel"></div>
+        <div class="tab-panel" id="tab-types"      role="tabpanel"></div>
+        <div class="tab-panel" id="tab-images"     role="tabpanel"></div>
+        <div class="tab-panel" id="tab-simonbroome" role="tabpanel"></div>
+        <div class="tab-panel" id="tab-steroids"    role="tabpanel"></div>
+        <div class="tab-panel" id="tab-ftu"                role="tabpanel"></div>
+        <div class="tab-panel" id="tab-schedule"          role="tabpanel"></div>
+        <div class="tab-panel" id="tab-special-groups"    role="tabpanel"></div>
+        <div class="tab-panel" id="tab-at-risk"           role="tabpanel"></div>
+        <div class="tab-panel" id="tab-contraindications" role="tabpanel"></div>
+        <div class="tab-panel" id="tab-administration"    role="tabpanel"></div>
+        <div class="tab-panel" id="tab-eye-drops"        role="tabpanel"></div>
+        <div class="tab-panel" id="tab-resources"        role="tabpanel"></div>
+      </div>
+
+      <!-- Footer disclaimer -->
+      <div class="modal-footer">
+        <p>Educational resource only &middot; Not a substitute for clinical judgement &middot; Not independently verified by NICE &middot; Always apply clinical judgement to individual patients</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating system picker button (mobile only) -->
+  <button class="sys-float-btn" id="sys-float-btn" hidden aria-label="Change system">
+    <span id="sys-float-label"></span>
+    <svg viewBox="0 0 16 16" fill="none" width="11" height="11" aria-hidden="true">
+      <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- System picker bottom sheet -->
+  <div class="sys-sheet-overlay" id="sys-sheet-overlay" hidden>
+    <div class="sys-sheet" id="sys-sheet" role="dialog" aria-modal="true" aria-label="Browse by system">
+      <div class="sys-sheet-handle"></div>
+      <div class="sys-sheet-header">
+        <span class="sys-sheet-title">Browse by System</span>
+        <button class="sys-sheet-close" id="sys-sheet-close" aria-label="Close">&#x2715;</button>
+      </div>
+      <div class="sys-sheet-list" id="sys-sheet-list"></div>
+    </div>
+  </div>
+
+  <!-- Onboarding hint -->
+  <div id="onboarding-hint" class="onboarding-hint" hidden>
+    <button class="hint-close" id="hint-close" aria-label="Dismiss tips">&#x2715;</button>
+    <p class="hint-label">Quick tips</p>
+    <div class="hint-items">
+      <div class="hint-item"><kbd class="hint-key">/</kbd> jump to search</div>
+      <div class="hint-item"><kbd class="hint-key">swipe</kbd> switch tabs inside a card</div>
+      <div class="hint-item"><kbd class="hint-key">bookmark</kbd> pin a card for quick access</div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Info popup overlay -->
+  <div class="info-popup-backdrop" id="info-popup-backdrop" aria-hidden="true"></div>
+  <div class="info-popup-panel" id="info-popup-panel" role="dialog" aria-modal="true" aria-labelledby="info-popup-title" hidden>
+    <div class="info-popup-header">
+      <span class="info-popup-title" id="info-popup-title"></span>
+      <button class="info-popup-close" id="info-popup-close" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="info-popup-body" id="info-popup-body"></div>
+  </div>
+
+  <!-- Data must load before app.js -->
+  <script src="data/guidelines.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+
+</body>
+</html>

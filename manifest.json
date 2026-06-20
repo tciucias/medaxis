@@ -1,0 +1,18 @@
+{
+  "name": "Medaxis",
+  "short_name": "Medaxis",
+  "description": "NICE guideline quick-reference cards for GPs and GP trainees",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#0d9488",
+  "background_color": "#eef1f8",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,318 @@
+/* ─── Leaflet — Screen + Print Styles ─── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --leaflet-accent:    #0d9488;
+  --leaflet-text:      #111827;
+  --leaflet-muted:     #6b7280;
+  --leaflet-border:    #d1d5db;
+  --leaflet-bg-soft:   #f8fafc;
+  --leaflet-bg-warn:   #fef3c7;
+  --leaflet-warn-border: #d97706;
+  --leaflet-bg-info:   #f0fdfa;
+  --leaflet-info-border: #0d9488;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Lato', system-ui, sans-serif;
+}
+
+/* ── Screen wrapper ── */
+body {
+  background: #e5e7eb;
+  font-family: var(--font-sans);
+  color: var(--leaflet-text);
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Screen controls bar ── */
+.screen-controls {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.ctrl-btn--print {
+  background: var(--leaflet-accent);
+  color: #fff;
+}
+.ctrl-btn--print:hover { background: #1d4ed8; }
+
+.ctrl-btn--back {
+  background: #fff;
+  color: var(--leaflet-text);
+  border-color: var(--leaflet-border);
+}
+.ctrl-btn--back:hover { background: #f3f4f6; }
+
+/* ── A4 page card ── */
+.leaflet-page {
+  background: #fff;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 18mm 20mm 16mm;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.14);
+  border-radius: 2px;
+}
+
+/* ── Header ── */
+.leaflet-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 2.5px solid var(--leaflet-accent);
+  margin-bottom: 1.2rem;
+}
+
+.leaflet-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand-name {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.brand-name .brand-med {
+  color: var(--leaflet-text);
+}
+
+.brand-name .brand-axis {
+  color: var(--leaflet-accent);
+  font-style: italic;
+}
+
+.brand-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--leaflet-muted);
+}
+
+.leaflet-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.leaflet-ref,
+.leaflet-updated {
+  font-size: 0.7rem;
+  color: var(--leaflet-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ── Title ── */
+.leaflet-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--leaflet-text);
+  margin-bottom: 0.35rem;
+}
+
+.leaflet-subtitle {
+  font-size: 0.8rem;
+  color: var(--leaflet-muted);
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid var(--leaflet-border);
+  padding-bottom: 1rem;
+}
+
+/* ── Body ── */
+.leaflet-body {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--leaflet-text);
+}
+
+/* Sections */
+.leaflet-body .l-section {
+  margin-bottom: 1.1rem;
+}
+
+.leaflet-body h2 {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--leaflet-accent);
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid var(--leaflet-info-border);
+}
+
+.leaflet-body p {
+  margin-bottom: 0.45rem;
+}
+
+.leaflet-body ul,
+.leaflet-body ol {
+  padding-left: 1.2rem;
+  margin-bottom: 0.45rem;
+}
+
+.leaflet-body li {
+  margin-bottom: 0.2rem;
+}
+
+.leaflet-body strong {
+  font-weight: 700;
+}
+
+/* Two-column layout for sections */
+.l-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Key numbers / highlight box */
+.l-key {
+  background: var(--leaflet-bg-info);
+  border-left: 3px solid var(--leaflet-info-border);
+  border-radius: 4px;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.85rem;
+}
+
+.l-key .l-key-label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--leaflet-accent);
+  margin-bottom: 0.2rem;
+}
+
+.l-key .l-key-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--leaflet-text);
+  line-height: 1.3;
+}
+
+.l-key .l-key-note {
+  font-size: 0.72rem;
+  color: var(--leaflet-muted);
+  margin-top: 0.1rem;
+}
+
+/* Warning / urgent box */
+.l-warn {
+  background: var(--leaflet-bg-warn);
+  border-left: 3px solid var(--leaflet-warn-border);
+  border-radius: 4px;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.85rem;
+}
+
+.l-warn .l-warn-label {
+  font-size: 0.65rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--leaflet-warn-border);
+  margin-bottom: 0.2rem;
+}
+
+/* Inline tag / pill */
+.l-pill {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--leaflet-bg-soft);
+  border: 1px solid var(--leaflet-border);
+  border-radius: 3px;
+  padding: 0.05em 0.45em;
+  margin: 0 0.1em;
+}
+
+/* ── Footer ── */
+.leaflet-footer {
+  margin-top: 1.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--leaflet-border);
+  font-size: 0.67rem;
+  color: var(--leaflet-muted);
+  line-height: 1.5;
+}
+
+/* ── Error state ── */
+.leaflet-error {
+  color: #b91c1c;
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+/* ── Print ── */
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm 1.8cm;
+  }
+
+  body {
+    background: none;
+    padding: 0;
+  }
+
+  .screen-controls { display: none !important; }
+
+  .leaflet-page {
+    width: 100%;
+    min-height: auto;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .leaflet-body h2 { color: #000; border-bottom-color: #999; }
+  .brand-name .brand-med { color: #000; }
+  .brand-name .brand-axis { color: #000; }
+  .leaflet-ref, .leaflet-updated, .leaflet-subtitle { color: #555; }
+  .leaflet-header { border-bottom-color: #000; }
+
+  .l-key { background: none; border-left: 2px solid #555; }
+  .l-key .l-key-label { color: #333; }
+  .l-warn { background: none; border-left: 2px solid #888; }
+  .l-warn .l-warn-label { color: #333; }
+
+  .l-cols { grid-template-columns: 1fr 1fr; }
+
+  a { color: #000; text-decoration: none; }
+  a::after { content: " (" attr(href) ")"; font-size: 0.7em; color: #555; }
+
+  h2, .l-key, .l-warn, li, tr { page-break-inside: avoid; }
+}
