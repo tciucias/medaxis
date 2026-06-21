@@ -1317,6 +1317,23 @@
         return;
       }
 
+      if (calcId === 'puqe') {
+        const allAnswered = [1,2,3].every(n =>
+          document.querySelector(`.wells-item[data-group="puqe-q${n}"].selected`)
+        );
+        if (!allAnswered) {
+          valueEl.textContent = '–';
+          riskEl.textContent  = 'Answer all 3 questions';
+          riskEl.className    = 'wells-risk';
+        } else {
+          valueEl.textContent = score;
+          if      (score >= 13) { riskEl.textContent = 'Severe — hospital admission threshold'; riskEl.className = 'wells-risk risk-high'; }
+          else if (score >= 7)  { riskEl.textContent = 'Moderate — optimise treatment; consider obstetric day unit'; riskEl.className = 'wells-risk risk-high'; }
+          else                  { riskEl.textContent = 'Mild — manage in primary care'; riskEl.className = 'wells-risk risk-low'; }
+        }
+        return;
+      }
+
       valueEl.textContent = score;
 
       if (calcId === 'dvt-wells') {
