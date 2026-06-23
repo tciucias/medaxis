@@ -1975,25 +1975,19 @@ main {
 
 /* ─── Tab Content Typography ─── */
 .tab-panel h4 {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: block;
   font-size: var(--text-xs);
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-1);
   margin: var(--space-5) 0 var(--space-3);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.3rem;
 }
 
 .tab-panel h4::before {
-  content: '';
-  display: inline-block;
-  width: var(--text-xs);
-  height: var(--text-xs);
-  background: var(--accent);
-  border-radius: 1px;
-  flex-shrink: 0;
+  display: none;
 }
 
 .tab-panel h4:first-child { margin-top: 0; }
