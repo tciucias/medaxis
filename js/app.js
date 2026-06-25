@@ -52,7 +52,7 @@
 
   const CONTENT_TAB_LABELS = {
     summary: 'Consult', diagnosis: 'Diagnosis', investigations: 'Investigations',
-    management: 'Management', referral: 'Referral', monitoring: 'Monitoring',
+    management: 'Management', prescribing: 'Prescribing Rules', referral: 'Referral', monitoring: 'Monitoring',
     overview: 'Overview', air: 'AIR Therapy', mart: 'MART Therapy',
     inhalers: 'Inhaler Types', insulins: 'Insulin Types', hrt: 'HRT',
     drugs: 'Oral Hypoglycaemics', types: 'Types', steroids: 'Topical Steroids',
@@ -70,6 +70,7 @@
     { key: 'air',               id: 'air' },
     { key: 'mart',              id: 'mart' },
     { key: 'inhalers',          id: 'inhalers' },
+    { key: 'prescribing',       id: 'prescribing' },
     { key: 'insulins',          id: 'insulins' },
     { key: 'hrt',               id: 'hrt' },
     { key: 'drugs',             id: 'drugs' },
@@ -97,7 +98,7 @@
     contentIndex = GUIDELINES.map(g => ({
       summary: strip(g.summary), diagnosis: strip(g.diagnosis),
       investigations: strip(g.investigations), management: strip(g.management),
-      referral: strip(g.referral), monitoring: strip(g.monitoring),
+      prescribing: strip(g.prescribing), referral: strip(g.referral), monitoring: strip(g.monitoring),
       overview: strip(g.overview), air: strip(g.air), mart: strip(g.mart),
       inhalers: strip(g.inhalers), insulins: strip(g.insulins), hrt: strip(g.hrt),
       drugs: strip(g.drugs), types: strip(g.types), steroids: strip(g.steroids),
@@ -493,7 +494,8 @@
         g.title.toLowerCase(),
         g.subtitle.toLowerCase(),
         (Array.isArray(g.system) ? g.system.join(' ') : g.system).toLowerCase(),
-        g.nice_ref.toLowerCase()
+        g.nice_ref.toLowerCase(),
+        (g.searchAliases || []).join(' ').toLowerCase()
       ]));
       const base = `${results.length} guideline${results.length !== 1 ? 's' : ''}`;
       countEl.textContent = aliasNote ? `${base} — searching ${aliasNote}` : base;
