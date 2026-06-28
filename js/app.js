@@ -1568,7 +1568,7 @@
     function openChangelog() {
       const list = document.getElementById('changelog-list');
       list.innerHTML = CHANGELOG.map(entry => {
-        const searchText = (entry.date + ' ' + entry.title.replace(/&[^;]+;/g, ' ') + ' ' + (entry.note || '')).toLowerCase();
+        const searchText = (entry.date + ' ' + entry.title.replace(/&[^;]+;/g, ' ')).toLowerCase();
         return `
         <div class="changelog-entry" data-id="${entry.id}" data-search-text="${searchText.replace(/"/g, '&quot;')}">
           <div class="changelog-row">

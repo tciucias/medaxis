@@ -1,4 +1,4 @@
-const CACHE = 'medaxis-v315';
+const CACHE = 'medaxis-v345';
 const BASE = self.location.pathname.replace(/sw\.js$/, '');
 
 const PRECACHE = [
